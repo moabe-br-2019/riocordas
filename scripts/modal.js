@@ -105,13 +105,82 @@ document.addEventListener('DOMContentLoaded', function() {
             removeError(locationInput);
         }
         
+        // Obter campo de mensagem (se existir)
+        const messageInput = document.getElementById('message') || { value: '' };
+        
+        // Obter campo de número de convidados (se existir)
+        const guestsInput = document.getElementById('guests') || { value: 0 };
+        
         // Se todos os campos obrigatórios estiverem preenchidos corretamente
         if (isValid) {
-            // Aqui você adicionaria o código para enviar o formulário para o servidor
-            // Por enquanto, apenas exibiremos uma mensagem de sucesso
-            showSuccessMessage();
+            // Prepara os dados para a API Baserow
+            const formData = {
+                "Nome do cliente": nameInput.value.trim(),
+                "Data do evento": weddingDateInput.value,
+                "Local do evento": locationInput.value.trim(),
+                "Número de convidados": parseInt(guestsInput.value) || 0,
+                "Email": emailInput.value.trim(),
+                "Telefone": phoneInput.value.trim(),
+                "Mensagem": messageInput.value.trim()
+            };
+            
+            // Enviar dados para a API do Baserow
+            submitToBaserow(formData);
         }
     });
+    
+    // Função para enviar dados para o Baserow
+    function submitToBaserow(data) {
+        // Mostrar indicador de carregamento
+        showLoadingIndicator();
+        
+        // Configurando o token de API - substitua 'YOUR_DATABASE_TOKEN' pelo token real
+        const apiToken = 'es4OIHz6dV93cJiImNVLg15rC57rjwHq';
+        
+        // Fazendo a requisição para a API do Baserow
+        fetch('https://api.baserow.io/api/database/rows/table/258308/?user_field_names=true', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Token ${apiToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                // Se a resposta não for bem-sucedida, lança um erro
+                return response.json().then(errorData => {
+                    throw new Error(`Erro na API: ${JSON.stringify(errorData)}`);
+                });
+            }
+            return response.json();
+        })
+        .then(responseData => {
+            console.log('Sucesso:', responseData);
+            showSuccessMessage();
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            showErrorMessage(error.message);
+        });
+    }
+    
+    // Função para mostrar indicador de carregamento
+    function showLoadingIndicator() {
+        // Oculta os elementos do formulário
+        const formElements = contactForm.querySelector('form');
+        formElements.style.display = 'none';
+        
+        // Cria e exibe o indicador de carregamento
+        const loadingIndicator = document.createElement('div');
+        loadingIndicator.className = 'loading-indicator active';
+        loadingIndicator.innerHTML = `
+            <div class="spinner"></div>
+            <p>Enviando sua mensagem...</p>
+        `;
+        
+        contactForm.appendChild(loadingIndicator);
+    }
     
     // Função para marcar um campo como erro
     function markAsError(element, message) {
@@ -143,9 +212,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Função para mostrar a mensagem de sucesso
     function showSuccessMessage() {
-        // Esconde o formulário
-        const formElements = contactForm.querySelector('form');
-        formElements.style.display = 'none';
+        // Remove o indicador de carregamento, se existir
+        const loadingIndicator = contactForm.querySelector('.loading-indicator');
+        if (loadingIndicator) {
+            loadingIndicator.remove();
+        }
         
         // Cria e mostra a mensagem de sucesso
         const successMessage = document.createElement('div');
@@ -169,8 +240,46 @@ document.addEventListener('DOMContentLoaded', function() {
             // Remove a mensagem de sucesso e restaura o formulário após fechar
             setTimeout(() => {
                 successMessage.remove();
-                formElements.style.display = '';
+                const formElements = contactForm.querySelector('form');
+                if (formElements) {
+                    formElements.style.display = '';
+                }
             }, 300);
+        });
+    }
+    
+    // Função para mostrar mensagem de erro
+    function showErrorMessage(errorText) {
+        // Remove o indicador de carregamento, se existir
+        const loadingIndicator = contactForm.querySelector('.loading-indicator');
+        if (loadingIndicator) {
+            loadingIndicator.remove();
+        }
+        
+        // Cria e mostra a mensagem de erro
+        const errorMessage = document.createElement('div');
+        errorMessage.className = 'form-error active';
+        errorMessage.innerHTML = `
+            <div class="error-icon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <h3 class="error-title">Erro ao Enviar</h3>
+            <p class="error-message">Não foi possível enviar sua mensagem. Por favor, tente novamente mais tarde.</p>
+            <p class="error-details">${errorText}</p>
+            <button class="form-button" id="closeErrorButton">Fechar</button>
+        `;
+        
+        contactForm.appendChild(errorMessage);
+        
+        // Adiciona evento para o botão de fechar na mensagem de erro
+        const closeErrorButton = document.getElementById('closeErrorButton');
+        closeErrorButton.addEventListener('click', function() {
+            // Remove a mensagem de erro e restaura o formulário
+            errorMessage.remove();
+            const formElements = contactForm.querySelector('form');
+            if (formElements) {
+                formElements.style.display = '';
+            }
         });
     }
     
