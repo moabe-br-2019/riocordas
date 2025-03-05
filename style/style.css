@@ -109,7 +109,7 @@
             height: 100vh;
             display: flex;
             align-items: center;
-            background-image: url('../imgs/piano.jpg');
+            background-image: url('https://github.com/moabe-br-2019/riocordas/blob/main/imgs/piano.jpg?raw=true');
             background-size: cover;
             background-position: center;
             position: relative;
