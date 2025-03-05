@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showLoadingIndicator();
         
         // Configurando o token de API - substitua 'YOUR_DATABASE_TOKEN' pelo token real
-        const apiToken = 'YOUR_DATABASE_TOKEN';
+        const apiToken = 'es4OIHz6dV93cJiImNVLg15rC57rjwHq';
         
         console.log('Iniciando chamada de API para o Baserow');
         
