@@ -109,7 +109,7 @@
             height: 100vh;
             display: flex;
             align-items: center;
-            background-image: url('/imgs/piano.jpg');
+            background-image: url('imgs/piano.jpg');
             background-size: cover;
             background-position: center;
             position: relative;
@@ -220,7 +220,7 @@
         .about-image {
             flex: 1;
             height: 600px;
-            background-image: url('/imgs/moabe-hugo.jpg');
+            background-image: url('imgs/moabe-hugo.jpg');
             background-size: cover;
             background-position: center;
         }
