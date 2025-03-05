@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showLoadingIndicator();
         
         // Configurando o token de API - substitua 'YOUR_DATABASE_TOKEN' pelo token real
-        const apiToken = 'es4OIHz6dV93cJiImNVLg15rC57rjwHq';
+        const apiToken = 'YOUR_DATABASE_TOKEN';
         
         console.log('Iniciando chamada de API para o Baserow');
         
@@ -189,14 +189,23 @@ document.addEventListener('DOMContentLoaded', function() {
     function showLoadingIndicator() {
         console.log('Exibindo indicador de carregamento');
         
-        // Verifica se o formulário existe antes de tentar manipulá-lo
-        const formElements = contactForm.querySelector('form');
-        
-        if (formElements) {
-            console.log('Formulário encontrado, ocultando elementos');
-            formElements.style.display = 'none';
+        // Verifica se o próprio contactForm é um formulário
+        if (contactForm.tagName === 'FORM') {
+            // Se o contactForm for o próprio form, oculta seus elementos filhos
+            console.log('contactForm é o próprio form, ocultando elementos filhos');
+            const formInputs = contactForm.querySelectorAll('input, textarea, select, button, label');
+            formInputs.forEach(element => {
+                element.style.display = 'none';
+            });
         } else {
-            console.log('ERRO: Elemento form não encontrado dentro de contactForm');
+            // Caso contrário, tenta encontrar o form dentro do contactForm
+            const formElement = contactForm.querySelector('form');
+            if (formElement) {
+                console.log('Formulário encontrado dentro de contactForm, ocultando-o');
+                formElement.style.display = 'none';
+            } else {
+                console.log('AVISO: Não foi possível encontrar o formulário para ocultar');
+            }
         }
         
         // Cria e exibe o indicador de carregamento
@@ -241,6 +250,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Função para mostrar a mensagem de sucesso
     function showSuccessMessage() {
+        console.log('Exibindo mensagem de sucesso');
+        
         // Remove o indicador de carregamento, se existir
         const loadingIndicator = contactForm.querySelector('.loading-indicator');
         if (loadingIndicator) {
@@ -269,9 +280,21 @@ document.addEventListener('DOMContentLoaded', function() {
             // Remove a mensagem de sucesso e restaura o formulário após fechar
             setTimeout(() => {
                 successMessage.remove();
-                const formElements = contactForm.querySelector('form');
-                if (formElements) {
-                    formElements.style.display = '';
+                
+                // Restaura a visibilidade dos elementos do formulário
+                if (contactForm.tagName === 'FORM') {
+                    // Se o contactForm for o próprio form, restaura seus elementos filhos
+                    console.log('Restaurando elementos do formulário');
+                    const formInputs = contactForm.querySelectorAll('input, textarea, select, button, label');
+                    formInputs.forEach(element => {
+                        element.style.display = '';
+                    });
+                } else {
+                    // Caso contrário, tenta encontrar o form dentro do contactForm
+                    const formElements = contactForm.querySelector('form');
+                    if (formElements) {
+                        formElements.style.display = '';
+                    }
                 }
             }, 300);
         });
@@ -279,6 +302,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Função para mostrar mensagem de erro
     function showErrorMessage(errorText) {
+        console.log('Exibindo mensagem de erro');
+        
         // Remove o indicador de carregamento, se existir
         const loadingIndicator = contactForm.querySelector('.loading-indicator');
         if (loadingIndicator) {
@@ -305,9 +330,21 @@ document.addEventListener('DOMContentLoaded', function() {
         closeErrorButton.addEventListener('click', function() {
             // Remove a mensagem de erro e restaura o formulário
             errorMessage.remove();
-            const formElements = contactForm.querySelector('form');
-            if (formElements) {
-                formElements.style.display = '';
+            
+            // Restaura a visibilidade dos elementos do formulário
+            if (contactForm.tagName === 'FORM') {
+                // Se o contactForm for o próprio form, restaura seus elementos filhos
+                console.log('Restaurando elementos do formulário após erro');
+                const formInputs = contactForm.querySelectorAll('input, textarea, select, button, label');
+                formInputs.forEach(element => {
+                    element.style.display = '';
+                });
+            } else {
+                // Caso contrário, tenta encontrar o form dentro do contactForm
+                const formElements = contactForm.querySelector('form');
+                if (formElements) {
+                    formElements.style.display = '';
+                }
             }
         });
     }
