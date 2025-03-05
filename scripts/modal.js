@@ -1,8 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM carregado, inicializando script do modal');
+    
     // Seleciona elementos do modal
     const contactModal = document.getElementById('contactModal');
     const closeModal = document.querySelector('.close-modal');
     const contactForm = document.getElementById('contactForm');
+    
+    // Verifica se os elementos foram encontrados
+    console.log('Modal encontrado:', !!contactModal);
+    console.log('Botão fechar encontrado:', !!closeModal);
+    console.log('Formulário encontrado:', !!contactForm);
     
     // Seleciona todos os botões que devem abrir o modal de contato
     const contactButtons = document.querySelectorAll('.cta-button, .hero-cta');
@@ -53,11 +60,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Validação e envio do formulário
-    contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Validação básica do formulário
-        let isValid = true;
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            console.log('Formulário enviado');
+            e.preventDefault();
+            
+            // Validação básica do formulário
+            let isValid = true;
         
         // Validação do nome
         const nameInput = document.getElementById('name');
@@ -124,18 +133,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 "Mensagem": messageInput.value.trim()
             };
             
+            console.log('Dados do formulário validados:', formData);
+            
             // Enviar dados para a API do Baserow
             submitToBaserow(formData);
+        } else {
+            console.log('Formulário com erros de validação');
         }
     });
+} else {
+    console.error('ERRO: Elemento contactForm não encontrado no DOM');
+}
     
     // Função para enviar dados para o Baserow
     function submitToBaserow(data) {
+        console.log('Enviando dados para o Baserow:', data);
+        
         // Mostrar indicador de carregamento
         showLoadingIndicator();
         
         // Configurando o token de API - substitua 'YOUR_DATABASE_TOKEN' pelo token real
         const apiToken = 'es4OIHz6dV93cJiImNVLg15rC57rjwHq';
+        
+        console.log('Iniciando chamada de API para o Baserow');
         
         // Fazendo a requisição para a API do Baserow
         fetch('https://api.baserow.io/api/database/rows/table/258308/?user_field_names=true', {
@@ -167,9 +187,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Função para mostrar indicador de carregamento
     function showLoadingIndicator() {
-        // Oculta os elementos do formulário
+        console.log('Exibindo indicador de carregamento');
+        
+        // Verifica se o formulário existe antes de tentar manipulá-lo
         const formElements = contactForm.querySelector('form');
-        formElements.style.display = 'none';
+        
+        if (formElements) {
+            console.log('Formulário encontrado, ocultando elementos');
+            formElements.style.display = 'none';
+        } else {
+            console.log('ERRO: Elemento form não encontrado dentro de contactForm');
+        }
         
         // Cria e exibe o indicador de carregamento
         const loadingIndicator = document.createElement('div');
@@ -179,6 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <p>Enviando sua mensagem...</p>
         `;
         
+        console.log('Adicionando indicador de carregamento ao formulário');
         contactForm.appendChild(loadingIndicator);
     }
     
