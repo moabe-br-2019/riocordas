@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repertório de Casamento - Rio Cordas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f8f9fa;
+            color: #000000;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .header {
+            background: white;
+            color: #000000;
+            padding: 2rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .logo-text h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.2rem;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        .logo-text p {
+            opacity: 0.7;
+            font-size: 1rem;
+            color: #666666;
+        }
+
+        .filters {
+            background: white;
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .filters.sticky {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 0;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .filter-container {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-logo {
+            width: 40px;
+            height: 40px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .filter-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .filters.sticky .filter-logo {
+            display: flex;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: #000000;
+        }
+
+        .filter-select {
+            padding: 0.8rem 1.2rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            background: white;
+            font-size: 1rem;
+            color: #333;
+            min-width: 200px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #f23c00;
+            box-shadow: 0 0 0 3px rgba(242, 60, 0, 0.1);
+        }
+
+        .search-container {
+            position: relative;
+            flex-grow: 1;
+            max-width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.8rem 1.2rem 0.8rem 3rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #f23c00;
+            box-shadow: 0 0 0 3px rgba(242, 60, 0, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .clear-filter-btn {
+            padding: 0.8rem 1.5rem;
+            background: #000000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            font-family: 'Playfair Display', serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .clear-filter-btn:hover {
+            background: #333333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .clear-filter-btn:active {
+            transform: translateY(0);
+        }
+
+        .catalog-grid {
+            padding: 3rem 0;
+        }
+
+        .catalog-grid.with-sticky-filter {
+            padding-top: 6rem;
+        }
+
+        .songs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .song-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+        }
+
+        .song-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .song-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 0.5rem;
+        }
+
+        .song-artist {
+            color: #8f8f8f;
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .song-style {
+            background: white;
+            color: #f23c00;
+            border: 2px solid #f23c00;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .stats {
+            background: white;
+            padding: 1.5rem 0;
+            border-top: 1px solid #eee;
+            margin-top: 2rem;
+        }
+
+        .stats-content {
+            text-align: center;
+            color: #8f8f8f;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem 0;
+            color: #8f8f8f;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem 0;
+            color: #8f8f8f;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #000000, #333333);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                text-align: center;
+            }
+            
+            .filter-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-select,
+            .search-container {
+                max-width: none;
+            }
+            
+            .songs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <img src="https://riocordas.com.br/imgs/logo-site-trans-big.png" alt="Rio Cordas Logo">
+                    </div>
+                    <div class="logo-text">
+                        <h1>Rio Cordas</h1>
+                        <p>Repertório para Casamentos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="filters" id="filtersSection">
+        <div class="container">
+            <div class="filter-container">
+                <div class="filter-logo">
+                    <img src="https://riocordas.com.br/imgs/logo-site-trans-big.png" alt="Rio Cordas Logo">
+                </div>
+                <span class="filter-label">Filtrar por:</span>
+                <select class="filter-select" id="styleFilter">
+                    <option value="">Todos os estilos</option>
+                </select>
+                
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Buscar por música ou artista...">
+                </div>
+                
+                <button class="clear-filter-btn" id="clearFilterBtn">
+                    Limpar Filtros
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <main class="catalog-grid" id="catalogGrid">
+        <div class="container">
+            <div class="loading" id="loading">Carregando repertório...</div>
+            <div class="songs-grid" id="songsGrid" style="display: none;"></div>
+            <div class="no-results" id="noResults" style="display: none;">
+                <h3>Nenhuma música encontrada</h3>
+                <p>Tente ajustar os filtros ou termos de busca.</p>
+            </div>
+        </div>
+    </main>
+
+    <div class="stats">
+        <div class="container">
+            <div class="stats-content" id="statsContent">
+                <!-- Stats will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Rio Cordas - Música para Casamentos | <a href="https://riocordas.com.br" style="color:#f23c00;">www.riocordas.com.br</a></p>
+        </div>
+    </footer>
+
+    <script>
+        let allSongs = [];
+        let filteredSongs = [];
+
+        // URL da API
+        const API_URL = 'https://script.googleusercontent.com/a/macros/riocordas.com.br/echo?user_content_key=AehSKLgTPM8_IVSf7_AdZwqs2Mui3oiVbaMaKb70YTzcntdq7b2MlTtB7ZE7sewOrA3TP7KmzqlyrOkc08_ZnohvI4zI79a2snUdrUJLm5HF0aunQl9QxKj4Z7osyIVEdP9QrExCNs_3C_S2Cu32PuoCMLr2taGTRoSGKK5rIvX3bF9WIsLW2wSBEbcXDAP_hfxIv-KHBk2BYmzdK5GmxvxnjI1I8mdq26rUEizuqSpMlgNMMwcnRG13F5owJYqSclWGQdXhnXAdZ6_NWrEL9aB2OzEnm1ekoS6CqSBkIydSEU_DHAKjAV8my3TlhirawQ&lib=M1Ky9evI2Sc_nC9HGp-oEv3U3Pmz4oTv4';
+
+        // Dados de exemplo (remova quando conectar com a API real)
+        const sampleData = [
+            {
+                "Nome da música": "A Bela e a Fera",
+                "Autor / Banda": "Angela Lansbury",
+                "Estilo": "Temas de Filmes"
+            },
+            {
+                "Nome da música": "Ave Maria",
+                "Autor / Banda": "Franz Schubert",
+                "Estilo": "Clássica"
+            },
+            {
+                "Nome da música": "Canon in D",
+                "Autor / Banda": "Johann Pachelbel",
+                "Estilo": "Clássica"
+            },
+            {
+                "Nome da música": "All of Me",
+                "Autor / Banda": "John Legend",
+                "Estilo": "Pop Internacional"
+            },
+            {
+                "Nome da música": "Thinking Out Loud",
+                "Autor / Banda": "Ed Sheeran",
+                "Estilo": "Pop Internacional"
+            },
+            {
+                "Nome da música": "Perfect",
+                "Autor / Banda": "Ed Sheeran",
+                "Estilo": "Pop Internacional"
+            },
+            {
+                "Nome da música": "A Thousand Years",
+                "Autor / Banda": "Christina Perri",
+                "Estilo": "Pop Internacional"
+            },
+            {
+                "Nome da música": "Marry Me",
+                "Autor / Banda": "Train",
+                "Estilo": "Pop Internacional"
+            },
+            {
+                "Nome da música": "Garota de Ipanema",
+                "Autor / Banda": "Tom Jobim",
+                "Estilo": "Bossa Nova"
+            },
+            {
+                "Nome da música": "Corcovado",
+                "Autor / Banda": "Tom Jobim",
+                "Estilo": "Bossa Nova"
+            },
+            {
+                "Nome da música": "Mas Que Nada",
+                "Autor / Banda": "Jorge Ben Jor",
+                "Estilo": "MPB"
+            },
+            {
+                "Nome da música": "Aquarela do Brasil",
+                "Autor / Banda": "Ary Barroso",
+                "Estilo": "MPB"
+            },
+            {
+                "Nome da música": "My Heart Will Go On",
+                "Autor / Banda": "Celine Dion",
+                "Estilo": "Temas de Filmes"
+            },
+            {
+                "Nome da música": "Somewhere Out There",
+                "Autor / Banda": "Linda Ronstadt",
+                "Estilo": "Temas de Filmes"
+            },
+            {
+                "Nome da música": "Can You Feel the Love Tonight",
+                "Autor / Banda": "Elton John",
+                "Estilo": "Temas de Filmes"
+            },
+            {
+                "Nome da música": "Für Elise",
+                "Autor / Banda": "Ludwig van Beethoven",
+                "Estilo": "Clássica"
+            },
+            {
+                "Nome da música": "Clair de Lune",
+                "Autor / Banda": "Claude Debussy",
+                "Estilo": "Clássica"
+            },
+            {
+                "Nome da música": "The Way You Look Tonight",
+                "Autor / Banda": "Frank Sinatra",
+                "Estilo": "Jazz"
+            },
+            {
+                "Nome da música": "Fly Me to the Moon",
+                "Autor / Banda": "Frank Sinatra",
+                "Estilo": "Jazz"
+            },
+            {
+                "Nome da música": "L-O-V-E",
+                "Autor / Banda": "Nat King Cole",
+                "Estilo": "Jazz"
+            }
+        ];
+
+        async function loadSongs() {
+            try {
+                // Tente carregar da API primeiro
+                const response = await fetch(API_URL);
+                const data = await response.json();
+                allSongs = data;
+                
+                filteredSongs = [...allSongs];
+                populateStyleFilter();
+                renderSongs();
+                updateStats();
+                hideLoading();
+            } catch (error) {
+                console.error('Erro ao carregar as músicas:', error);
+                console.log('Usando dados de exemplo...');
+                // Use dados de exemplo em caso de erro
+                allSongs = sampleData;
+                filteredSongs = [...allSongs];
+                populateStyleFilter();
+                renderSongs();
+                updateStats();
+                hideLoading();
+            }
+        }
+
+        function populateStyleFilter() {
+            const styles = [...new Set(allSongs.map(song => song.Estilo))].sort();
+            const styleFilter = document.getElementById('styleFilter');
+            
+            // Limpa opções existentes (exceto "Todos os estilos")
+            while (styleFilter.children.length > 1) {
+                styleFilter.removeChild(styleFilter.lastChild);
+            }
+            
+            styles.forEach(style => {
+                const option = document.createElement('option');
+                option.value = style;
+                option.textContent = style;
+                styleFilter.appendChild(option);
+            });
+        }
+
+        function renderSongs() {
+            const songsGrid = document.getElementById('songsGrid');
+            const noResults = document.getElementById('noResults');
+            
+            if (filteredSongs.length === 0) {
+                songsGrid.style.display = 'none';
+                noResults.style.display = 'block';
+                return;
+            }
+            
+            noResults.style.display = 'none';
+            songsGrid.style.display = 'grid';
+            
+            songsGrid.innerHTML = filteredSongs.map(song => `
+                <div class="song-card">
+                    <div class="song-title">${song['Nome da música']}</div>
+                    <div class="song-artist">por ${song['Autor / Banda']}</div>
+                    <div class="song-style">${song.Estilo}</div>
+                </div>
+            `).join('');
+        }
+
+        function updateStats() {
+            const total = allSongs.length;
+            const filtered = filteredSongs.length;
+            const styles = [...new Set(allSongs.map(song => song.Estilo))].length;
+            
+            document.getElementById('statsContent').innerHTML = `
+                Exibindo <strong>${filtered}</strong> de <strong>${total}</strong> músicas | 
+                <strong>${styles}</strong> estilos musicais disponíveis
+            `;
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function filterSongs() {
+            const styleFilter = document.getElementById('styleFilter').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            filteredSongs = allSongs.filter(song => {
+                const matchesStyle = !styleFilter || song.Estilo === styleFilter;
+                const matchesSearch = !searchTerm || 
+                    song['Nome da música'].toLowerCase().includes(searchTerm) ||
+                    song['Autor / Banda'].toLowerCase().includes(searchTerm);
+                
+                return matchesStyle && matchesSearch;
+            });
+            
+            renderSongs();
+            updateStats();
+        }
+
+        function clearFilters() {
+            document.getElementById('styleFilter').value = '';
+            document.getElementById('searchInput').value = '';
+            filteredSongs = [...allSongs];
+            renderSongs();
+            updateStats();
+        }
+
+        // Event listeners
+        document.getElementById('styleFilter').addEventListener('change', filterSongs);
+        document.getElementById('searchInput').addEventListener('input', filterSongs);
+        document.getElementById('clearFilterBtn').addEventListener('click', clearFilters);
+
+        // Sticky filter functionality
+        let filtersSection = document.getElementById('filtersSection');
+        let catalogGrid = document.getElementById('catalogGrid');
+        let filtersOffset = 0;
+
+        function handleScroll() {
+            if (filtersOffset === 0) {
+                filtersOffset = filtersSection.offsetTop;
+            }
+
+            if (window.pageYOffset >= filtersOffset) {
+                filtersSection.classList.add('sticky');
+                catalogGrid.classList.add('with-sticky-filter');
+            } else {
+                filtersSection.classList.remove('sticky');
+                catalogGrid.classList.remove('with-sticky-filter');
+            }
+        }
+
+        window.addEventListener('scroll', handleScroll);
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSongs();
+            // Calcular offset inicial dos filtros após o carregamento
+            setTimeout(() => {
+                filtersOffset = filtersSection.offsetTop;
+            }, 100);
+        });
+    </script>
+</body>
+</html>
