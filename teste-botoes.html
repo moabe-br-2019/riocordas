@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Botões - Rio Cordas</title>
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="stylesheet" href="/style/modal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            padding: 40px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .button-row {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Teste de Todos os Botões - Rio Cordas</h1>
+    <p>Verificando se todos os botões têm fonte Montserrat e fundo laranja (#f23c00)</p>
+
+    <div class="test-section">
+        <h2>Botões do Header</h2>
+        <div class="button-row">
+            <button class="cta-button">Agendar (Header)</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Botões do Hero</h2>
+        <div class="button-row">
+            <button class="hero-cta">Solicitar Proposta (Hero)</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Botões da Seção CTA</h2>
+        <div class="button-row">
+            <button class="hero-cta">Entrar em Contato (CTA Section)</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Botão do Modal/Formulário</h2>
+        <div class="button-row">
+            <button class="form-button">Enviar (Modal)</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Botões Genéricos</h2>
+        <div class="button-row">
+            <button>Botão Genérico</button>
+            <input type="submit" value="Input Submit">
+            <input type="button" value="Input Button">
+            <button class="button">Com Classe .button</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Teste do Modal</h2>
+        <div class="button-row">
+            <button class="cta-button" onclick="openTestModal()">Abrir Modal de Teste</button>
+        </div>
+    </div>
+
+    <!-- Modal de Teste -->
+    <div class="contact-modal" id="testModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Modal de Teste</h3>
+                <div class="close-modal" onclick="closeTestModal()">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p>Teste do botão dentro do modal:</p>
+                <form>
+                    <div class="form-group">
+                        <label>Teste:</label>
+                        <input type="text" placeholder="Campo de teste">
+                    </div>
+                    <button type="submit" class="form-button">Botão do Formulário</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openTestModal() {
+            document.getElementById('testModal').classList.add('active');
+        }
+        
+        function closeTestModal() {
+            document.getElementById('testModal').classList.remove('active');
+        }
+        
+        // Log das fontes para verificação
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('button, input[type="submit"], input[type="button"]');
+            console.log('🎨 Verificando botões:');
+            
+            buttons.forEach((btn, index) => {
+                const computedStyle = window.getComputedStyle(btn);
+                console.log(`Botão ${index + 1}:`, {
+                    element: btn.tagName + (btn.className ? '.' + btn.className : ''),
+                    fontFamily: computedStyle.fontFamily,
+                    backgroundColor: computedStyle.backgroundColor,
+                    color: computedStyle.color
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,6 +1,5 @@
-
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" style="scroll-behavior: smooth;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,7 +30,7 @@
                     <a href="/repertorio/">Repertório</a>
                     <a href="#contact">Contato</a>
                 </div>
-                <button class="cta-button">Agendar</button>
+                <button class="cta-button" id="ctaButton">Agendar</button>
             </nav>
         </div>
     </header>
@@ -41,7 +40,7 @@
             <p class="hero-subtitle">Desde 2011</p>
             <h1 class="hero-title">Elegância e Sofisticação em Cada Nota</h1>
             <p class="hero-description">Transformamos o seu evento em uma experiência musical inesquecível com arranjos únicos e músicos de excelência.</p>
-            <button class="hero-cta">Solicitar Proposta</button>
+            <button class="hero-cta" id="heroCtaButton">Solicitar Proposta</button>
         </div>
     </section>
 
@@ -52,10 +51,12 @@
                 <h2 class="section-title">Nossa História e Missão</h2>
             </div>
             <div class="about-content">
-                <div class="about-image"></div>
+                <div class="about-image">
+                    <img src="/imgs/moabe-hugo.jpg" alt="Moabe e Hugo - Fundadores do Grupo Rio Cordas" class="founders-image">
+                </div>
                 <div class="about-text">
                     <p class="about-tagline">Criando momentos inesquecíveis através da música desde 2011.</p>
-                    <p class="about-description">O Grupo Rio Cordas é uma equipe de músicos profissionais no Rio de Janeiro, especializada em oferecer música ao vivo personalizada para casamentos e eventos desde 2012. Com um repertório diversificado, adaptamos nossos serviços às preferências de clientes exigentes, garantindo que cada evento se torne uma experiência verdadeiramente inesquecível.</p>
+                    <p class="about-description">O Grupo Rio Cordas é uma equipe de músicos profissionais no Rio de Janeiro, especializada em oferecer música ao vivo personalizada para casamentos e eventos desde 2011. Com um repertório diversificado, adaptamos nossos serviços às preferências de clientes exigentes, garantindo que cada evento se torne uma experiência verdadeiramente inesquecível.</p>
                     <p class="about-description">Nossas formações instrumentais incluem violino, saxofone, teclado, voz, trompete triunfal e violoncelo, entre outros, permitindo combinações que atendem às necessidades específicas de cada cerimônia ou celebração de casamento. O repertório é cuidadosamente selecionado para refletir o estilo e a personalidade dos clientes, abrangendo desde músicas clássicas até contemporâneas, nacionais e internacionais. Com um serviço 100% personalizado, o Grupo Rio Cordas dedica-se a transformar eventos em momentos mágicos através da música ao vivo de alta qualidade.</p>
                     <div class="about-stats">
                         <div class="stat">
@@ -227,12 +228,12 @@
                     <img src="/imgs/logo-site-trans-big.png" alt="Grupo Rio cordas logo" width="150">
                     <p class="footer-description">Elevamos o seu evento a um novo patamar de elegância através da música clássica executada com excelência e paixão.</p>
                     <div class="footer-social">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://www.facebook.com/riocordas" target=_blank><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/riocordas" target=_blank><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@riocordas" target=_blank><i class="fab fa-youtube"></i></a>
                     </div>
-                    <p class="footer-email">contato@riocordas.com.br</p>
+                    <a href="mailto:contato@riocordas.com.br"><p class="footer-email">contato@riocordas.com.br</p></a>
+                    
                 </div>
             </div>
             <div class="footer-bottom">
@@ -295,7 +296,7 @@
             </form>
         </div>
     </div>
-</div>
+</div><!-- Carregue os scripts na ordem correta -->
     <script src="/scripts/script.js"></script>
     <script src="/scripts/whatsapp.js"></script>
     <script src="/scripts/modal.js"></script>
